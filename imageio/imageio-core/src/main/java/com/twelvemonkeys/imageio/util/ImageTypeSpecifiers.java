@@ -106,6 +106,10 @@ public final class ImageTypeSpecifiers {
             // As the ComponentColorModel is broken for 32 bit unsigned int, we'll use our own version
             return new UInt32ImageTypeSpecifier(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {0}, false, false);
         }
+        else if (bits == 32 && dataType == DataBuffer.TYPE_FLOAT) {
+            // As the ComponentColorModel is broken for 32 bit float, we'll use our own version
+            return new FloatImageTypeSpecifier(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {0}, false, false);
+        }
 
         // NOTE: The isSigned boolean is stored but *not used for anything* in the Grayscale ImageTypeSpecifier...
         return ImageTypeSpecifier.createGrayscale(bits, dataType, false);
@@ -119,6 +123,10 @@ public final class ImageTypeSpecifiers {
         else if (bits == 32 && dataType == DataBuffer.TYPE_INT) {
             // As the ComponentColorModel is broken for 32 bit unsigned int, we'll use our own version
             return new UInt32ImageTypeSpecifier(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {0, 1}, true, isAlphaPremultiplied);
+        }
+        else if (bits == 32 && dataType == DataBuffer.TYPE_FLOAT) {
+            // As the ComponentColorModel is broken for 32 bit float, we'll use our own version
+            return new FloatImageTypeSpecifier(ColorSpace.getInstance(ColorSpace.CS_GRAY), new int[] {0, 1}, true, isAlphaPremultiplied);
         }
 
         // NOTE: The isSigned boolean is stored but *not used for anything* in the Grayscale ImageTypeSpecifier...

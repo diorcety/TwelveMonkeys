@@ -869,6 +869,30 @@ public final class TIFFImageWriter extends ImageWriterBase {
                         }
 
                         break;
+                    case DataBuffer.TYPE_FLOAT:
+                        if (1 == numComponents) {
+                            for (int b = 0; b < dataBuffer.getNumBanks(); b++) {
+                                for (int y = offsetY; y < tileHeight + offsetY; y++) {
+                                    int yOff = y * stride / 4;
+
+                                    for (int x = offsetX; x < tileWidth + offsetX; x++) {
+                                        final int xOff = yOff + x;
+
+                                        buffer.putFloat(dataBuffer.getElemFloat(b, xOff));
+                                    }
+
+                                    flushBuffer(buffer, stream);
+
+                                    if (stream instanceof DataOutputStream) {
+                                        DataOutputStream dataOutputStream = (DataOutputStream) stream;
+                                        dataOutputStream.flush();
+                                    }
+                                }
+                            }
+                        } else {
+                            throw new IllegalArgumentException("Not implemented for data type: " + dataBuffer.getDataType());
+                        }
+                        break;
                     default:
                         throw new IllegalArgumentException("Not implemented for data type: " + dataBuffer.getDataType());
                 }
