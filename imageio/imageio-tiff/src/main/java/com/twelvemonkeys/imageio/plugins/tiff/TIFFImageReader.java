@@ -1695,6 +1695,8 @@ public class TIFFImageReader extends ImageReaderBase {
     }
 
     private void normalizeColor(int photometricInterpretation, byte[] data) throws IIOException {
+        if (true) return; // Disable normalization
+
         switch (photometricInterpretation) {
             case TIFFBaseline.PHOTOMETRIC_WHITE_IS_ZERO:
                 // Inverse values
@@ -1776,6 +1778,8 @@ public class TIFFImageReader extends ImageReaderBase {
     }
 
     private void normalizeColor(int photometricInterpretation, short[] data) throws IIOException {
+        if (true) return; // Disable normalization
+
         switch (photometricInterpretation) {
             case TIFFBaseline.PHOTOMETRIC_WHITE_IS_ZERO:
                 // Inverse values
@@ -1847,6 +1851,8 @@ public class TIFFImageReader extends ImageReaderBase {
         }
     }
     private void normalizeColor(int photometricInterpretation, int[] data) {
+        if (true) return; // Disable normalization
+
         switch (photometricInterpretation) {
             case TIFFBaseline.PHOTOMETRIC_WHITE_IS_ZERO:
                 // Inverse values
@@ -1866,6 +1872,8 @@ public class TIFFImageReader extends ImageReaderBase {
     }
 
     private void normalizeColor(int photometricInterpretation, float[] data) {
+        if (true) return; // Disable normalization
+
         switch (photometricInterpretation) {
             case TIFFBaseline.PHOTOMETRIC_WHITE_IS_ZERO:
             case TIFFExtension.PHOTOMETRIC_CIELAB:
