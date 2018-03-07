@@ -58,6 +58,7 @@ import java.awt.image.*;
 import java.io.*;
 import java.lang.reflect.Array;
 import java.nio.ByteBuffer;
+import java.nio.ByteOrder;
 import java.util.*;
 import java.util.zip.Deflater;
 import java.util.zip.DeflaterOutputStream;
@@ -446,7 +447,7 @@ public final class TIFFImageWriter extends ImageWriterBase {
         }
         else {
             // Write image data
-            writeImageData(createCompressorStream(renderedImage, param, entries), imageIndex, renderedImage, numBands, bandOffsets, bitOffsets);
+            writeImageData(imageOutput.getByteOrder(), createCompressorStream(renderedImage, param, entries), imageIndex, renderedImage, numBands, bandOffsets, bitOffsets);
         }
 
         long stripByteCount = imageOutput.getStreamPosition() - stripOffset;
@@ -688,7 +689,7 @@ public final class TIFFImageWriter extends ImageWriterBase {
         return shorts;
     }
 
-    private void writeImageData(DataOutput stream, int imageIndex, RenderedImage renderedImage, int numComponents, int[] bandOffsets, int[] bitOffsets) throws IOException {
+    private void writeImageData(ByteOrder byteOrder, DataOutput stream, int imageIndex, RenderedImage renderedImage, int numComponents, int[] bandOffsets, int[] bitOffsets) throws IOException {
         // Store 3BYTE, 4BYTE as is (possibly need to re-arrange to RGB order)
         // Store INT_RGB as 3BYTE, INT_ARGB as 4BYTE?, INT_ABGR must be re-arranged
         // Store IndexColorModel as is
@@ -710,7 +711,7 @@ public final class TIFFImageWriter extends ImageWriterBase {
         final int sampleSize = renderedImage.getSampleModel().getSampleSize(0);
         final int numBands = renderedImage.getSampleModel().getNumBands();
 
-        final ByteBuffer buffer = ByteBuffer.allocate((tileWidth * numBands * sampleSize + 7) / 8);
+        final ByteBuffer buffer = ByteBuffer.allocate((tileWidth * numBands * sampleSize + 7) / 8).order(byteOrder);
 
         for (int yTile = minTileY; yTile < maxYTiles; yTile++) {
             for (int xTile = minTileX; xTile < maxXTiles; xTile++) {
